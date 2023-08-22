@@ -8,6 +8,7 @@ public class Address {
 	private String street;
 	private String zip;
 	private String city;
+	private String name;
 
 	public Address() {
 		super();
@@ -19,6 +20,8 @@ public class Address {
 		this.zip = zip;
 		this.city = city;
 	}
+
+
 
 	public String getStreet() {
 		return street;
