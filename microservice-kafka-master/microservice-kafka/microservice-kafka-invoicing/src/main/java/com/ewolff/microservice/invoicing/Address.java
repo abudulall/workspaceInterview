@@ -9,6 +9,7 @@ public class Address {
 	private String zip;
 	private String city;
 	private String customerName;
+	private String remark;
 
 
 	public Address() {
