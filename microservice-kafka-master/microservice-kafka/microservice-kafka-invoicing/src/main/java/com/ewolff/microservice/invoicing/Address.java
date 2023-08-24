@@ -10,6 +10,7 @@ public class Address {
 	private String city;
 	private String customerName;
 	private String remark;
+	private String name;
 
 
 	public Address() {
