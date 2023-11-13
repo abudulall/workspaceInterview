@@ -1,0 +1,183 @@
+How to handle Hibernate Migration or Dealing with Key generation in Hibernate 5.x
+
+Kill Your Tech- Domain Driven Design.MD
+
+Q1: What is Domain Driven Design?
+Answer:
+Domain Driven Design is a methodology and process prescription for the development of complex systems
+whose focus is mapping activities, tasks, events, and data within a problem domain into the technology artifacts
+of a solution domain.
+It is all about trying to make your software a model of a real-world system or process
+
+Q2: List some advantages of Domain-Driven Design. Why developers shall use it? ☆☆
+Answer:
+Simpler communication:
+Thanks to the Ubiquitous Language, communication between developers and teams become much easier.
+As the Ubiquitous language is likely to contain simpler terms developers refer to, there's no need for
+complicated technical terms.
+More flexibility:
+As DDD is object-oriented, everything about the domain is based on and object is modular and caged.
+Thanks to this, the entire system can be modified and improved regularly
+The domain is more important than UI/UX :
+As the domain is the central concept, developers will bild applications suited for the particular domain.
+This won't be another interface-focused application.
+Although you shouldn't leave out UX , using the DDD approach means that the product targets exactly the
+users that are directly connected to the domain.
+
+Q3: Explain the different layers in DDD ☆☆☆
+Answer:
+User Interface (or Presentation Layer):
+Responsible for showing information to the user and interpreting the user's commands.
+The external actor might sometimes be another computer system rather than a human user.
+Application Layer:
+Defines the jobs the softwares supposed to do and directs the expressive domain objects to work out
+problems.
+The tasks this layer is responsible for are meaningful to the business or necessary for interaction with the
+application layers of other systems.
+This layer is kept thin.
+It does not contain business rules or knowledge, but only coordinates tasks and delegates work to
+collaborations of domain object in the next layer down.
+It does not have state reflecting the business situation, but it can have state that reflects the progress of a
+task for the user or the program.
+Domain Layer (or Model Layer):
+Responsible for representing concepts of the business, information about the business situation, and
+business rules.
+State that reflects the business situation is controlled and used here, even though the technical details of
+storing it are deegated to the infrasturcture.
+This layer is the heart of business software.
+Infrastructure Layer:
+Provides generic technical capabilities that support the higher layers: message sending for the application,
+persistence for the domain, drawing widgets for the UI, and so on.
+The infrastructure layer may also support the pattern of interactions between the four layers through an
+architectural framework.
+
+Q4: What does Bounded Context mean in DDD? ☆☆☆
+Answer:
+A Bounded Context is a conceptual boundary around parts of the application and/or the project in terms of
+business domain, teams, and code.
+It groups related components and concepts and avoids ambiguity as some of these could have similar
+meanings without a clear context.
+Bounded Contexts have both unrelated concepts (such as a support ticket only existing in a customer support
+context) but also share concepts (such as products and customers). Different contexts may have completely
+different models of common concepts with mechanisms to map between these polysemic concepts for integration. Several DDD patterns explore alternative relationships between contexts.
+
+Q5: What is the differences between Strategic Patterns and Tactical Patterns? ☆☆☆
+Answer:
+Domain-Driven Design (DDD) is divided into strategic patterns and tactical patterns:
+The Strategic Pattern consists of things like Bounded context, Ubiquitous language, and Context Map
+The Tactical Pattern consists of concepts like Value Types, Entities, and Aggregate.
+Consider:
+Strategic patterns are easy to map to any language.
+Strategic patterns mostly cover a higher-level design of software like bounded context, context map, anticorruption layer and patterns for bounded context integration.
+Strategic patterns do not depend on the programming language or framework used.
+However, the tactical pattern relies on programming language constructs and paradigms
+
+Q6: What is the difference between Domain Objects, POCO, Services, Repositories and Entities? ☆☆☆
+Answer:
+POCO - Plain Old %Insert_Your_Language% Object. A type with no logic in it. It just stores data in memory.
+You'd usually see just auto properties in it, sometimes fields and constructors.
+Domain Object an instance of a class that is related to your domain. I would probably exclude any satellite or
+utility objects from domain object, e.g. in most cases, domain objects do not include things like logging,
+formatting, serialisation, encryption etc - unless you are specifically building a product to log, serialise,
+format or encrypt respectively.
+Model Object I think is the same as Domain object . Folks tend to use this interchangeably.
+Entity a class that has id
+Repository a class that speaks to a data storage from one side (e.g. a database, a data service or ORM) and
+to the service, UI, business layer or any other requesting body. It usually hides away all the data-related stuff
+(like replication, connection pooling, key constraints, transactions etc) and makes it simple to just work with
+data
+Service a class (or microservice) that provides some functionality usually via public API. Depending on the
+layer, it can be for example a RESTful self-contained container, or class that allows you to find a particular
+instance of needed type.
+
+Q7: What is the difference between Behavior-Driven Development (BDD) vs Domain-Driven Design (DDD)? ☆☆☆
+Answer:
+DDD focuses on defining the vocabulary in that language: actors, entities, operations, ... An important part
+of DDD is also that the ubiquitous language can be clearly seen in the code, too, not only in communication
+between the implementor and the domain expert. So an extreme view of DDD is quite static: it describes the
+finished system as a whole.
+BDD focuses on defining user stories or scenarios. It is closely related to an incremental process, but it can
+also be viewed as static: it describes all the interactions between users and the finished system.
+DDD and BDD can be applied with no overlapping: BDD user stories can be written using only UI vocabulary
+(buttons, labels, ...), and DDD can avoid mentioning interactions.
+But ideally these two overlap and work together: the BDD stories are rich in the ubiquitous language, describing
+the user experience with domain concepts. And DDD makes sure the stories can be found in the code.
+
+Q8: What is Event Storming in DDD? ☆☆☆
+Answer:
+Event storming is not a notation. It's a very interactive team practice based on sticky notes put on a board and
+rearranged as the modelling progresses. It starts with the identification of the events, seeks the commands that
+cause them, and then looks at the involved aggregates/entities. It engages both Domain Experts and developers
+in a fast-paced learning process.
+The output of an event storming describes the domain using the following DDD concepts:
+Domain Events
+Commands (that cause the Domain Events)
+Aggregates (or Aggregate root Entities)
+Issues (optional)
+User Roles (optional)
+Views / Read Models (optional)
+Bounded Contexts
+Subdomains
+Event Flows (optional)
+
+Q9: Name some benefits of CQRS Pattern ☆☆☆
+Answer:
+Benefits of CQRS include:
+Independent scaling. CQRS allows the read and write workloads to scale independently, and may result in
+fewer lock contentions.
+Optimized data schemas. The read side can use a schema that is optimized for queries, while the write
+side uses a schema that is optimized for updates.
+Security. It's easier to ensure that only the right domain entities are performing writes on the data.
+Separation of concerns. Segregating the read and write sides can result in models that are more
+maintainable and flexible. Most of the complex business logic goes into the write model. The read model can
+be relatively simple.
+Simpler queries. By storing a materialized view in the read database, the application can avoid complex
+joins when querying.
+
+Q10: Describe what is the Event Sourcing Pattern ☆☆☆
+Answer:
+Event Sourcing is a pattern for the recording of state in a non-destructive way. Each change of state is
+appended to a log. Because the changes are non-destructive, we preserve the ability to answer queries about
+the state of the object at any point in its life cycle.
+Event sourcing enables traceability of changes.
+Event sourcing enables audit logs without any additional effort.
+Event sourcing makes it possible to reinterpret the past.
+Event sourcing reduces the conflict potential of simultaneously occurring changes.
+Event sourcing enables easy versioning of business logic.
+Event Sourcing is not necessary for CQRS. You can combine Event Sourcing and CQRS. This kind of combination
+can lead us to a new type of CQRS. It involves modelling the state changes made by applications as an
+immutable sequence or log of events.
+
+Q11: What are Aggregates in Domain-Driven Design? ☆☆☆☆
+Answer:
+Aggregate is a pattern in Domain-Driven Design.
+A DDD aggregate is a cluster of domain objects that can be treated as a single unit for the purpose of data
+changes.
+An aggregate will have one of its componet objects be the aggregate root.
+Any references from outside the aggregate should only go to the aggregate root.
+The root can thus ensure the integrity of the aggregate as a whole.
+Note:
+Aggregates are the basic element of transfer of data storage - you request to load or save whole aggregates.
+Transactions should not cross aggregate boundaries.
+
+Q12: What is Context Mapping's purpose in DDD? ☆☆☆☆
+Answer:
+Context mapping is a tool that allows you to identify the relationship between bounded contexts and the
+relationship between the teams that are responsible for them. Context mapping helps:
+Identifying and graphically documenting each Bounded Context in the project is called Context Mapping
+Context Maps help better understand how Bounded Contexts and teams relate and communicate with
+each other
+They give a clear idea of the actual boundaries and help teams visually describe the conceptual subdivisions
+of the system's design
+
+Q13: What is main difference between Domain vs Application vs Infrastructure Services? ☆☆☆☆
+Answer:
+Services come in 3 flavours: Domain Services, Application Services, and Infrastructure Services.
+Domain Services : Encapsulates business logic that doesn't naturally fit within a domain object, and are
+NOT typical CRUD operations – those would belong to a Repository.
+Application Services : Used by external consumers to talk to your system (think Web Services). If
+consumers need access to CRUD operations, they would be exposed here.
+Infrastructure Services : Used to abstract technical concerns (e.g. MSMQ, email provider, etc).
+Keeping Domain Services along with your Domain Objects is sensible – they are all focused on domain logic. And
+yes, you can inject Repositories into your Services. Application Services will typically use both Domain Services
+and Repositories to deal with external requests.
