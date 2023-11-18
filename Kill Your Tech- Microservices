@@ -1,0 +1,165 @@
+Q1: List down the advantages of Microservices Architecture ☆☆
+Topics: Microservices
+Answer:
+Independent Development. All microservices can be easily developed based on their individual
+functionality
+Independent Deployment. Based on their services, they can be individually deployed in any application
+Fault Isolation. Even if one service of the application does not work, the system still continues to function
+Mixed Technology Stack. Different languages and technologies can be used to build different services of
+the same application
+Granular Scaling. Individual components can scale as per need, there is no need to scale all components
+together
+
+Q2: What are the features of Microservices? ☆☆☆
+Topics: Microservices
+Answer:
+Decoupling – Services within a system are largely decoupled. So the application as a whole can be easily
+built, altered, and scaled
+Componentization – Microservices are treated as independent components that can be easily replaced and
+upgraded
+Business Capabilities – Microservices are very simple and focus on a single capability
+Autonomy – Developers and teams can work independently of each other, thus increasing speed
+Continous Delivery – Allows frequent releases of software, through systematic automation of software
+creation, testing, and approval
+Responsibility – Microservices do not focus on applications as projects. Instead, they treat applications as
+products for which they are responsible
+Decentralized Governance – The focus is on using the right tool for the right job. That means there is no
+standardized pattern or any technology pattern. Developers have the freedom to choose the best useful tools
+to solve their problems
+Agility – Microservices support agile development. Any new feature can be quickly developed and discarded
+again
+
+Q3: How does Microservice Architecture work? ☆☆☆
+Topics: Microservices
+Answer:
+Clients – Different users from various devices send requests.
+Identity Providers – Authenticates user or clients identities and issues security tokens.
+API Gateway – Handles client requests.
+Static Content – Houses all the content of the system.
+Management –  Balances services on nodes and identifies failures.
+Service Discovery – A guide to find the route of communication between microservices.
+Content Delivery Networks – Distributed network of proxy servers and their data centers.
+Remote Service – Enables the remote access information that resides on a network of IT devices.
+
+Q4: What is the difference between Monolithic, SOA and
+Microservices Architecture? ☆☆☆
+Topics: Microservices Software Architecture SOA
+Answer:
+Monolithic Architecture is similar to a big container wherein all the software components of an application
+are assembled together and tightly packaged.
+A Service-Oriented Architecture is a collection of services which communicate with each other. The
+communication can involve either simple data passing or it could involve two or more services coordinating
+some activity.
+Microservice Architecture is an architectural style that structures an application as a collection of small
+autonomous services, modeled around a business domain.
+
+Q5: What are main differences between Microservices and
+Monolithic Architecture? ☆☆☆
+Topics: Microservices
+Answer:
+Microservices
+Service Startup is fast
+Microservices are loosely coupled architecture.
+Changes done in a single data model does not affect other Microservices.
+Microservices focuses on products, not projects
+Monolithic Architecture
+Service startup takes time
+Monolithic architecture is mostly tightly coupled.
+Any changes in the data model affect the entire database
+Monolithic put emphasize over the whole project
+
+Q6: What are the standard patterns of orchestrating
+microservices? ☆☆☆
+Topics: Microservices
+Answer:
+As we start to model more and more complex logic, we have to deal with the problem of managing business
+processes that stretch across the boundary of individual services.
+With orchestration, we rely on a central brain to guide and drive the process, much like the conductor in an
+orchestra. The orchestration style corresponds more to the SOA idea of orchestration/task services. For
+example we could wrap the business flow in its own service. Where the proxy orchestrates the interaction
+between the microservices like shown in the below picture.
+With choreography, we inform each part of the system of its job, and let it work out the details, like dancers
+all find‐ ing their way and reacting to others around them in a ballet. The choreography style corresponds to
+the dumb pipes and smart endpoints mentioned by Martin Fowler's. That approach is also called the domain
+approach and is using domain events, where each service publish events regarding what have happened
+and other services can subscribe to those events.
+
+Q7: Whether do you find GraphQL the right fit for designing
+microservice architecture? ☆☆☆
+Topics: Microservices GraphQL
+Answer:
+GraphQL and microservices are a perfect fit, because GraphQL hides the fact that you have a microservice
+architecture from the clients. From a backend perspective, you want to split everything into microservices, but
+from a frontend perspective, you would like all your data to come from a single API. Using GraphQL is the best
+way I know of that lets you do both. It lets you split up your backend into microservices, while still providing a
+single API to all your application, and allowing joins across data from different services.
+
+Q8: Explain what is the API Gateway pattern ☆☆☆☆
+Answer:
+An API Gateway is a server that is the single entry point into the system. It is similar to the Facade pattern from
+object‑oriented design. The API Gateway encapsulates the internal system architecture and provides an API that
+is tailored to each client. It might have other responsibilities such as authentication, monitoring, load balancing,
+caching, request shaping and management, and static response handling.
+A major benefit of using an API Gateway is that it encapsulates the internal structure of the application. Rather
+than having to invoke specific services, clients simply talk to the gateway.
+
+Q9: Name the main differences between SOA and Microservices?
+☆☆☆☆☆
+Topics: Microservices SOA
+Answer:
+SOA uses Enterprise Service Bus for communication whereas microservices use much simpler messaging
+systems.
+Each microservice stores data independently while in SOA components share the same storage.
+For microservices, it’s typical to use Cloud while for SOA Application Servers are much more common.
+SOA is still a monolith, in order to make changes, you need to change the entire architecture.
+SOA using only heavy-weight technologies and protocols (like SOAP, etc) whereas microservices is the leaner,
+meaner, more agile approach (REST/GraphQL).
+
+Q10: What is the difference between Cohesion and Coupling?
+☆☆☆☆☆
+Topics: Microservices Software Architecture
+Answer:
+Cohesion refers to what the class (or module) can do. Low cohesion would mean that the class does a great
+variety of actions - it is broad, unfocused on what it should do. High cohesion means that the class is focused on
+what it should be doing, i.e. only methods relating to the intention of the class.
+As for coupling, it refers to how related or dependent two classes/modules are toward each other. For low
+coupled classes, changing something major in one class should not affect the other. High coupling would make it
+difficult to change and maintain your code; since classes are closely knit together, making a change could
+require an entire system revamp.
+Good software design has high cohesion and low coupling.
+
+Q11: What is the most accepted transaction strategy for
+microservices? ☆☆☆☆☆
+Topics: Microservices Software Architecture
+Answer:
+Microservices introduce eventual consistency issues because of their laudable insistence on decentralized data
+management. With a monolith, you can update a bunch of things together in a single transaction. Microservices
+require multiple resources to update, and distributed transactions are frowned upon (for good reason). So now,
+developers need to be aware of consistency issues, and figure out how to detect when things are out of sync
+before doing anything the code will regret.
+Think how transactions occur and what kind make sense for your services then, you can implement a rollback
+mechanism that un-does the original operation, or a 2-phase commit system that reserves the original operation
+until told to commit for real.
+Financial services do this kind of thing all the time - if I want to move money from my bank to your bank, there is
+no single transaction like you'd have in a DB. You don't know what systems either bank is running, so must
+effectively treat each like your microservices. In this case, my bank would move my money from my account to a
+holding account and then tell your bank they have some money, if that send fails, my bank will refund my
+account with the money they tried to send.
+
+Q12: Why would one use sagas over 2PC and vice versa? ☆☆☆☆☆
+Topics: Microservices
+Answer:
+Here are two approaches which I know are used to implement distributed transactions:
+2-phase commit (2PC)
+Sagas
+2PC is a protocol for applications to transparently utilize global ACID transactions by the support of the platform.
+Being embedded in the platform, it is transparent to the business logic and the application code as far as I know.
+Sagas, on the other hand, are series of local transactions, where each local transaction mutates and persist the
+entities along with some flag indicating the phase of the global transaction and commits the change. In the other
+words, state of the transaction is part of the domain model. Rollback is the matter of committing a series of
+"inverted" transactions. Events emitted by the services triggers these local transactions in either case.
+Typically, 2PC is for immediate transactions.
+Typically, Sagas are for long running transactions.
+I personally consider Saga capable of doing what 2PC can do, but they have the overhead of implementing the
+redo mechanism. Opposite is not accurate. I think Sagas are universal, while 2PC involves platform/vendor
+lockdown and lacks platform independence
