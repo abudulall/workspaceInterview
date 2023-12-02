@@ -1,0 +1,178 @@
+Q1: How Do you update a live heavy traffic site with minimum or Zero Down Time? ☆☆☆
+Answer:
+Deploying a newer version of a live website can be a challenging task specially when a website has high traffic.
+Any downtime is going to affect the users. There are a few best practices that we can follow:
+Before deploying on Production:
+Thoroughly test the new changes and ensure it working in a test environment which is almost identical to
+production system.
+If possible do automation of test cases as much as possible.
+Create a automated sanity testing script (also called as smoke test) that can be run on production (without
+affecting real data). These are typically readonly type of test cases. However depending on your application
+needs you can add more cases to this. Make sure it can be run quickly by keeping it short.
+Create scripts for all manual tasks(if possible), avoiding any hand typing mistakes during day of deployment.
+Test the script to make sure they work on a non-production environment.
+Keep the build artifacts ready. e.g application deployment files, database scripts, config files etc.
+Create a checklist of things to do on day of deployment.
+Rehearse. Deploy in a non-prod environment is almost identical to production. Try this with production data
+volumes(if possible). Make a note of time required for your tasks so you can plan accordingly.
+When doing deploying on a production environment:*
+Use Green-Blue deployment technique to reduce down-time risk
+Keep backup of current site/data to be able to rollback
+Use sanity test cases before doing a lot of in depth testing
+
+Q2: What is the difference between Monolithic, SOA and Microservices Architecture? ☆☆☆
+Answer:
+Monolithic Architecture is similar to a big container wherein all the software components of an application
+are assembled together and tightly packaged.
+A Service-Oriented Architecture is a collection of services which communicate with each other. The
+communication can involve either simple data passing or it could involve two or more services coordinating some activity.
+Microservice Architecture is an architectural style that structures an application as a collection of small
+autonomous services, modeled around a business domain.
+
+Q3: WebSockets vs Rest API for real time data? Which to choose? ☆☆☆
+Problem:
+I need to constantly access a server to get real time data of financial instruments. The price is constantly
+changing so I need to request new prices every 0.5 seconds. Which kind if API would you recommend?
+Solution:
+The most efficient operation for what you're describing would be to use a webSocket connection between client
+and server and have the server send updated price information directly to the client over the webSocket ONLY
+when the price changes by some meaningful amount or when some minimum amount of time has elapsed and
+the price has changed.
+Here's a comparison of the networking operations involved in sending a price change over an already open
+webSocket vs. making a REST call.
+webSocket
+1. Server sees that a price has changed and immediately sends a message to each client.
+2. Client receives the message about new price.
+Rest/Ajax
+1. Client sets up a polling interval
+2. Upon next polling interval trigger, client creates socket connection to server
+3. Server receives request to open new socket
+4. When connection is made with the server, client sends request for new pricing info to server
+5. Server receives request for new pricing info and sends reply with new data (if any).
+6. Client receives new pricing data
+7. Client closes socket
+8. Server receives socket close
+As you can see there's a lot more going on in the Rest/Ajax call from a networking point of view because a new
+connection has to be established for every new call whereas the webSocket uses an already open call. In
+addition, in the webSocket cases, the server just sends the client new data when new data is available - the
+client doens't have to regularly request it.
+A webSocket can also be faster and easier on your networking infrastructure simply because fewer network
+operations are involved to simply send a packet over an already open webSocket connection versus creating a
+new connection for each REST/Ajax call, sending new data, then closing the connection. How much of a
+difference/improvement this makes in your particular application would be something you'd have to measure to
+really know.
+
+Q4: What is the difference between Behavior-Driven Development (BDD) vs Domain-Driven Design (DDD)? ☆☆☆
+Answer:
+DDD focuses on defining the vocabulary in that language: actors, entities, operations, ... An important part
+of DDD is also that the ubiquitous language can be clearly seen in the code, too, not only in communication
+between the implementor and the domain expert. So an extreme view of DDD is quite static: it describes the
+finished system as a whole.
+BDD focuses on defining user stories or scenarios. It is closely related to an incremental process, but it can
+also be viewed as static: it describes all the interactions between users and the finished system.
+DDD and BDD can be applied with no overlapping: BDD user stories can be written using only UI vocabulary
+(buttons, labels, ...), and DDD can avoid mentioning interactions.
+But ideally these two overlap and work together: the BDD stories are rich in the ubiquitous language, describing
+the user experience with domain concepts. And DDD makes sure the stories can be found in the code.
+
+Q5: What is the Command and Query Responsibility Segregation (CQRS) Pattern? ☆☆☆
+Answer:
+In traditional architectures, the same data model is used to query and update a database. That's simple and
+works well for basic CRUD operations.
+CQRS stands for Command and Query Responsibility Segregation, a pattern that separates read and
+update operations for a data store. CQRS separates reads and writes into different models, using commands to
+update data, and queries to read data.
+Commands should be task-based, rather than data-centric. ("Book hotel room", not "set ReservationStatus to
+Reserved").
+Commands may be placed on a queue for asynchronous processing, rather than being processed
+synchronously.
+Queries never modify the database. A query returns a DTO that does not encapsulate any domain
+knowledge.
+
+Q6: Name some benefits of CQRS Pattern ☆☆☆
+Answer:
+Benefits of CQRS include:
+Independent scaling. CQRS allows the read and write workloads to scale independently, and may result in
+fewer lock contentions.
+Optimized data schemas. The read side can use a schema that is optimized for queries, while the write
+side uses a schema that is optimized for updates.
+Security. It's easier to ensure that only the right domain entities are performing writes on the data.
+Separation of concerns. Segregating the read and write sides can result in models that are more
+maintainable and flexible. Most of the complex business logic goes into the write model. The read model can
+be relatively simple.
+Simpler queries. By storing a materialized view in the read database, the application can avoid complex
+joins when querying.
+
+Q7: What Is Sharding? ☆☆☆☆
+Answer:
+Sharding is a architectural approach that distributes a single logical database system into a cluster of machines.
+Sharding is Horizontal partitioning design scheme. In this database design rows of a database table are stored
+separately, instead of splitting into columns (like in normalization and vertical partitioning). Each partition is
+called as a shard, which can be independently located on a separate database server or physical location.
+Sharding makes a database system highly scalable. The total number of rows in each table in each database is
+reduced since the tables are divided and distributed into multiple servers. This reduces the index size, which
+generally means improved search performance. The most common approach for creating shards is by the use of
+consistent hashing of a unique id in application (e.g. user id).
+The downsides of sharding:
+It requires application to be aware of the data location.
+Any addition or deletion of nodes from system will require some rebalance to be done in the system.
+If you require lot of cross node join queries then your performance will be really bad. Therefore, knowing how
+the data will be used for querying becomes really important.
+A wrong sharding logic may result in worse performance. Therefore make sure you shard based on the
+application need.
+
+Q8: What is Unit test, Integration Test, Smoke test, Regression Test and what are the differences between them? ☆☆☆☆
+Answer:
+Unit test: Specify and test one point of the contract of single method of a class. This should have a very
+narrow and well defined scope. Complex dependencies and interactions to the outside world are stubbed or
+mocked.
+Integration test: Test the correct inter-operation of multiple subsystems. There is whole spectrum there,
+from testing integration between two classes, to testing integration with the production environment.
+Smoke test (aka Sanity check): A simple integration test where we just check that when the system
+under test is invoked it returns normally and does not blow up.
+Smoke testing is both an analogy with electronics, where the first test occurs when powering up a circuit
+(if it smokes, it's bad!)...
+... and, apparently, with plumbing, where a system of pipes is literally filled by smoke and then checked
+visually. If anything smokes, the system is leaky.
+Regression test: A test that was written when a bug was fixed. It ensures that this specific bug will not
+occur again. The full name is "non-regression test". It can also be a test made prior to changing an
+application to make sure the application provides the same outcome.
+To this, I will add:
+Acceptance test: Test that a feature or use case is correctly implemented. It is similar to an integration test,
+but with a focus on the use case to provide rather than on the components involved
+System test: Tests a system as a black box. Dependencies on other systems are often mocked or stubbed
+during the test (otherwise it would be more of an integration test).
+Pre-flight check: Tests that are repeated in a production-like environment, to alleviate the 'builds on my
+machine' syndrome. Often this is realized by doing an acceptance or smoke test in a production like
+environment.
+Canary test is an automated, non-destructive test that is run on a regular basis in a LIVE environment,
+such that if it ever fails, something really bad has happened. Examples might be:
+Has data that should only ever be available in DEV/TEST appeared in LIVE.
+Has a background process failed to run
+Can a user logon
+
+Q9: How do you off load work from the Database? ☆☆☆☆
+Answer:
+Here is a list of standard options.
+Optimize the access to the database to only do what you need, efficiently. A good DBA can help here a lot.
+This is a basic step that most companies do.
+Cache data away from the database using something like memcached. This is usually done at the
+application layer, and is highly effective. Virtually every competent website should do this.
+More ambitiously, maintain read-only copies of the database, and direct queries there when possible. On
+the database side the necessary technology is called "replication" and the read-only copies are often also
+backups for failover from the main database. If you're doing a million dynamic pages per hour, odds are that
+you are doing this, or have thought about it.
+Buy really, really expensive hardware for the database. I know that PayPal did this as of 4 years ago, and
+changing their architecture would have been difficult so they possibly still are.
+Shard the database into multiple pieces with ranges of data. This is a very intrusive change into
+application design. A well-known example of a company that does this is eBay.
+Try to use a database that scales onto multiple machines. Oracle RAC scales onto clusters, but doesn't let
+you distribute data widely. Other offerings exist that are supposed to be easier to distribute, including
+Microsoft's SQL Azure and FathomDB. I have not used those offerings and don't know how well they work. I
+suspect better than nothing, but I doubt they scale horizontally that well.
+Relational databases generally try to provide ACID guarantees. But the CAP theorem makes it very difficult to
+do that in a distributed system, particularly while letting you do things like join data. Therefore people have
+come up with many NoSQL alternatives that explicitly offer weaker guarantees and avoid problematic
+operations in return for fully distributed scalability. Well-known examples of companies that use scalable
+NoSQL data stores include Google, Facebook and Twitter
+
