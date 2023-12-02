@@ -1,0 +1,86 @@
+Q1: Compare Onion vs Clean vs Hexagonal Architectures ☆☆☆☆
+Answer:
+Hexagonal, Onion, and Clean Architecture all center around the idea of externalizing the database and other
+dependencies instead of building around them but use different terminology:
+Hexagonal or “ports and adapters” architecture:
+Your core application logic is written with only a concept of whatever external dependencies it has. In
+object-oriented terms, this means it declares and references an interface, but leaves the implementation
+of that interface out of the core logic.
+This can be thought of as a “port” such as a display port or USB port. The outer layer of the application
+then creates an “adapter” which plugs into the port
+There are no layers.
+Onion Architecture. It expanded on the idea to define a “Core”:
+The core “Domain Model” represents enterprise-wide business rules.
+In the next layer up are “Domain Services” such as abstract repositories (still leaving the implementation
+details such as a database connection to the outer layers).
+Further up is “Application Services” which defined the business processes of the application. In the outer most layer are the user interface, connections to external infrastructure, and automated tests.
+There are layers, with the dependencies always pointing inwards, i.e., a layer can use any of the layers
+inside it.
+Clean Architecture:
+Instead of “Domain Model”, it refers to the core as “Entities”
+The concept of “Screaming Architecture”. It should be glaringly obvious at a glance what an application
+does.
+Re-phrases “Application Services” as “Use Cases”
+
+Q2: Are you familiar with The Twelve-Factor App principles? ☆☆☆☆☆
+Answer:
+The Twelve-Factor App methodology is a methodology for building software as a service applications. These
+best practices are designed to enable applications to be built with portability and resilience when deployed to the
+web.
+Codebase - There should be exactly one codebase for a deployed service with the codebase being used for
+many deployments.
+Dependencies - All dependencies should be declared, with no implicit reliance on system tools or libraries.
+Config - Configuration that varies between deployments should be stored in the environment.
+Backing services All backing services are treated as attached resources and attached and detached by the
+execution environment.
+Build, release, run - The delivery pipeline should strictly consist of build, release, run.
+Processes - Applications should be deployed as one or more stateless processes with persisted data stored
+on a backing service.
+Port binding - Self-contained services should make themselves available to other services by specified
+ports.
+Concurrency - Concurrency is advocated by scaling individual processes.
+Disposability - Fast startup and shutdown are advocated for a more robust and resilient system.
+Dev/Prod parity - All environments should be as similar as possible.
+Logs - Applications should produce logs as event streams and leave the execution environment to
+aggregate.
+Admin Processes - Any needed admin tasks should be kept in source control and packaged with the
+application.
+
+Q3: What is the most accepted transaction strategy for microservices? ☆☆☆☆☆
+Answer:
+Microservices introduce eventual consistency issues because of their laudable insistence on decentralized data
+management. With a monolith, you can update a bunch of things together in a single transaction. Microservices
+require multiple resources to update, and distributed transactions are frowned upon (for good reason). So now,
+developers need to be aware of consistency issues, and figure out how to detect when things are out of sync
+before doing anything the code will regret.
+Think how transactions occur and what kind make sense for your services then, you can implement a rollback
+mechanism that un-does the original operation, or a 2-phase commit system that reserves the original operation
+until told to commit for real.
+Financial services do this kind of thing all the time - if I want to move money from my bank to your bank, there is
+no single transaction like you'd have in a DB. You don't know what systems either bank is running, so must
+effectively treat each like your microservices. In this case, my bank would move my money from my account to a
+holding account and then tell your bank they have some money, if that send fails, my bank will refund my
+account with the money they tried to send.
+
+Q4: Cache miss-storm: Dealing with concurrency when caching invalidates for high-traffic sites ☆☆☆☆☆
+Problem:
+For a high traffic website, there is a method (say getItems() ) that gets called frequently. To prevent going to the
+DB each time, the result is cached. However, thousands of users may be trying to access the cache at the same
+time, and so locking the resource would not be a good idea, because if the cache has expired, the call is made to
+the DB, and all the users would have to wait for the DB to respond. What would be a good strategy to deal with
+this situation so that users don't have to wait?
+Solution:
+The problem is the so-called Cache miss-storm (Cache Stampede or Dogpile) - a scenario in which a lot of users
+trigger regeneration of the cache, hitting in this way the DB.
+To prevent this, first you have to set soft and hard expiration date. Lets say the hard expiration date is 1 day, and
+the soft 1 hour. The hard is one actually set in the cache server, the soft is in the cache value itself (or in another
+key in the cache server). The application reads from cache, sees that the soft time has expired, set the soft time
+1 hour ahead and hits the database. In this way the next request will see the already updated time and won't
+trigger the cache update - it will possibly read stale data, but the data itself will be in the process of
+regeneration.
+Next point is: you should have procedure for cache warm-up, e.g. instead of user triggering cache update, a
+process in your application to pre-populate the new data.
+The worst case scenario is e.g. restarting the cache server, when you don't have any data. In this case you
+should fill cache as fast as possible and there's where a warm-up procedure may play vital role. Even if you don't
+have a value in the cache, it would be a good strategy to "lock" the cache (mark it as being updated), allow only
+one query to the database, and handle in the application by requesting the resource again after a given timeout
