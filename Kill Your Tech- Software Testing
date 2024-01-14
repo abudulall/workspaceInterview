@@ -1,0 +1,115 @@
+Q1: What is the difference between load and stress testing?
+Answer:
+A load test is usually conducted to understand the behaviour of the system under a specific expected load. This
+load can be the expected concurrent number of users on the application performing a specific number of
+transactions within the set duration. This test will give out the response times of all the important business
+critical transactions.
+A stress testing instead is performed to understand the upper limits of capacity within the system. This kind of
+test is done to determine the system's robustness in terms of extreme load and helps application administrators
+to determine if the system will perform sufficiently if the current load goes well above the expected maximum.
+
+Q2: What is Mocking?
+Answer:
+Mocking is primarily used in unit testing. An object under test may have dependencies on other (complex)
+objects. To isolate the behavior of the object you want to replace the other objects by mocks that simulate the
+behavior of the real objects. This is useful if the real objects are impractical to incorporate into the unit test.
+In short, **mocking **is creating objects that simulate the behavior of real objects.
+
+Q3: Name some Performance Testing metrics to measure
+Answer:
+Response time - Total time to send a request and get a response.
+Wait time - Also known as average latency, this tells developers how long it takes to receive the first byte
+after a request is sent.
+Average load time - The average amount of time it takes to deliver every request is a major indicator of
+quality from a user’s perspective.
+Peak response time - This is the measurement of the longest amount of time it takes to fulfill a request. A
+peak response time that is significantly longer than average may indicate an anomaly that will create
+problems.
+Error rate - This calculation is a percentage of requests resulting in errors compared to all requests. These
+errors usually occur when the load exceeds capacity.
+Concurrent users - This the most common measure of load — how many active users at any point. Also
+known as load size.
+Requests per second - How many requests are handled.
+Transactions passed/failed - A measurement of the total numbers of successful or unsuccessful requests.
+Throughput - Measured by kilobytes per second, throughput shows the amount of bandwidth used during
+the test.
+CPU utilization - How much time the CPU needs to process requests. Memory utilization - How much
+memory is needed to process the request.
+
+Q4: What do I lose by adopting TDD? What are the disadvantages of Test Driven Development?
+Answer:
+Big-time investment + knowledge required of knowing how to write testable code.. For the simple
+case, you lose about 20% of the actual implementation, but for complicated cases, you lose much more.
+Where you have a large number of tests, changing the system might require re-writing some or all of
+your tests, depending on which ones got invalidated by the changes. This could turn a relatively quick
+modification into a very time-consuming one.
+You might start making design decisions based more on TDD than on actually good design principles.
+As a result, you now have a much more complex system that is actually more prone to mistakes (and other
+devs and devs after you shall know how to support it).
+Complexity of code (DI, IoC, MVC/MVP__) + Design Impacts. When you start using mocks, after a
+while, you will want to start using Dependency Injection (DI) and an Inversion of Control (IoC) container. To do
+that you need to use interfaces for everything (which have a lot of pitfalls themselves). At the end of the day,
+you have to write a lot more code, than if you just do it the "plain old way". Instead of just a customer
+class, you also need to write an interface, a mock class, some IoC configuration and a few tests.
+Prototyping can be very difficult with TDD. Continuous Tweaking of tests in the exploration phase of
+the project. For data structures and black-box algorithms, unit tests would be perfect, but for algorithms that
+tend to be changed, tweaked or fine-tuned, this can cause a big-time investment that one might claim is not
+justified. Every time you change the design of a class, now you have to also change the test cases.
+
+Q5: What is Unit test, Integration Test, Smoke test, Regression Test and what are the differences between them?
+Answer:
+Unit test: Specify and test one point of the contract of single method of a class. This should have a very
+narrow and well defined scope. Complex dependencies and interactions to the outside world are stubbed or
+mocked.
+Integration test: Test the correct inter-operation of multiple subsystems. There is whole spectrum there,
+from testing integration between two classes, to testing integration with the production environment.
+Smoke test (aka Sanity check): A simple integration test where we just check that when the system
+under test is invoked it returns normally and does not blow up.
+Smoke testing is both an analogy with electronics, where the first test occurs when powering up a circuit
+(if it smokes, it's bad!)...
+... and, apparently, with plumbing, where a system of pipes is literally filled by smoke and then checked
+visually. If anything smokes, the system is leaky.
+Regression test: A test that was written when a bug was fixed. It ensures that this specific bug will not
+occur again. The full name is "non-regression test". It can also be a test made prior to changing an
+application to make sure the application provides the same outcome.
+Acceptance test: Test that a feature or use case is correctly implemented. It is similar to an integration test,
+but with a focus on the use case to provide rather than on the components involved.
+System test: Tests a system as a black box. Dependencies on other systems are often mocked or stubbed
+during the test (otherwise it would be more of an integration test).
+Pre-flight check: Tests that are repeated in a production-like environment, to alleviate the 'builds on my
+machine' syndrome. Often this is realized by doing an acceptance or smoke test in a production like
+environment.
+Canary test is an automated, non-destructive test that is run on a regular basis in a LIVE environment,
+such that if it ever fails, something really bad has happened. Examples might be:
+Has data that should only ever be available in DEV/TEST appeared in LIVE.
+Has a background process failed to run
+Can a user logon
+
+Q6: Is Unit Testing worth the effort?
+Answer:
+Unit Tests allows you to make big changes to code quickly. You know it works now because you've run the
+tests, when you make the changes you need to make, you need to get the tests working again. This saves
+hours.
+TDD helps you to realise when to stop coding. Your tests give you confidence that you've done enough for
+now and can stop tweaking and move on to the next thing.
+The tests and the code work together to achieve better code. Your code could be bad / buggy. Your TEST
+could be bad / buggy. In TDD you are banking on the chances of both being bad / buggy being low. Often it's
+the test that needs fixing but that's still a good outcome.
+TDD helps with coding constipation. When faced with a large and daunting piece of work ahead writing the
+tests will get you moving quickly.
+Unit Tests help you really understand the design of the code you are working on. Instead of writing code to
+do something, you are starting by outlining all the conditions you are subjecting the code to and what
+outputs you'd expect from that.
+Unit Tests give you instant visual feedback, we all like the feeling of all those green lights when we've done.
+It's very satisfying. It's also much easier to pick up where you left off after an interruption because you can
+see where you got to - that next red light that needs fixing.
+Contrary to popular belief unit testing does not mean writing twice as much code, or coding slower. It's faster
+and more robust than coding without tests once you've got the hang of it. Test code itself is usually relatively
+trivial and doesn't add a big overhead to what you're doing. This is one you'll only believe when you're doing
+it :)
+I think it was Fowler who said: "Imperfect tests, run frequently, are much better than perfect tests that are
+never written at all". I interpret this as giving me permission to write tests where I think they'll be most
+useful even if the rest of my code coverage is woefully incomplete.
+Good unit tests can help document and define what something is supposed to do
+Unit tests help with code re-use. Migrate both your code and your tests to your new project. Tweak the code
+till the tests run again.
